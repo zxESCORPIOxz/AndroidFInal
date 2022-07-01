@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="color1">#3552f2</color>
+    <color name="color2">#162d59</color>
+    <color name="color3">#f2c53d</color>
+    <color name="color4">#f2b05e</color>
+    <color name="color5">#f27830</color>
+
+    <!--///////////////////////////////////////////-->
+
+    <color name="color1D">#081459</color>
+    <color name="color2D">#010D26</color>
+    <color name="color3D">#0762D9</color>
+    <color name="color4D">#07DBF2</color>
+    <color name="color5D">#A64724</color>
+
+    <!--///////////////////////////////////////////-->
+
+    <color name="Blanco">#ffffff</color>
+    <color name="Negro">#000000</color>
+</resources>
