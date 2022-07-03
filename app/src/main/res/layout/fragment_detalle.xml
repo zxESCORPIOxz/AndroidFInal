@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".ui.Detalle">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginVertical="15dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/imvTipo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <TextView
+            android:id="@+id/txtHeroe"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_weight="200">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+    </ScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvImgs"
+        android:layout_marginVertical="15dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_marginVertical="15dp"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnlike"
+            android:layout_width="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:background="@color/color3"
+            android:layout_margin="10dp"
+            android:layout_height="40dp"/>
+
+        <Button
+            android:id="@+id/btnComentario"
+            android:layout_width="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:background="@color/color3"
+            android:layout_margin="10dp"
+            android:layout_height="40dp"/>
+
+    </LinearLayout>
+</LinearLayout>

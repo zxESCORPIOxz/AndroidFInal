@@ -1,35 +1,29 @@
 package com.example.androidfinal.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.Navigation;
 
 import android.util.TypedValue;
-import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,23 +35,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-
 import techpaliyal.com.curlviewanimation.CurlPage;
 import techpaliyal.com.curlviewanimation.CurlView;
-import techpaliyal.com.curlviewanimation.CurlActivity;
-
 import static android.content.Context.MODE_PRIVATE;
-import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 public class Noticias extends Fragment {
-    DatabaseReference df = FirebaseDatabase.getInstance().getReference();;
+    DatabaseReference df = FirebaseDatabase.getInstance().getReference();
     CurlView mCurlView;
     Button btnDetalle;
     String er;
-    ArrayList<PostMLBB> listaPost;
-    int c1,c2,c3,c4,c5,f;
+    ArrayList<PostMLBB> listaPost = new ArrayList<>();
+    ArrayList<String> listaIDS = new ArrayList<>();
+    int c1,c2,c3,c4,c5,f,tema,cfont=0;
     int tama=0;
     int index = 0;
     PostMLBB p = new PostMLBB();
@@ -73,10 +63,12 @@ public class Noticias extends Fragment {
         c3=Color.parseColor(sp.getString("Color3", "#f2c53d"));
         c4=Color.parseColor(sp.getString("Color4", "#f2b05e"));
         c5=Color.parseColor(sp.getString("Color5", "#f27830"));
+        tema= Integer.parseInt(sp.getString("Theme", "1"));
         f = Integer.parseInt(sp.getString("Fuente", "2"));
+        cfont = Color.WHITE;
         switch(f){
             case 1:{
-                tama = -2;
+                tama = -1;
                 break;
             }
             case 2:{
@@ -84,7 +76,7 @@ public class Noticias extends Fragment {
                 break;
             }
             case 3:{
-                tama = 2;
+                tama = 1;
                 break;
             }
             default:{
@@ -97,17 +89,31 @@ public class Noticias extends Fragment {
             }
             btnDetalle = view.findViewById(R.id.btnDetalle);
             mCurlView = view.findViewById(R.id.pagNoticias);
-            mBitmapIds.add((BitmapDrawable) getResources().getDrawable(R.drawable.image1));
+            listaPost.clear();
+            listaIDS.clear();
+            mBitmapIds.add((BitmapDrawable) getResources().getDrawable(R.drawable.mllogo));
             df.child("PostMLBB").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    listaPost = new ArrayList<>();
-                    er=dataSnapshot.toString();
                     try {
                         for (DataSnapshot objSnaptshot : dataSnapshot.getChildren()){
+                            listaIDS.add(objSnaptshot.getKey());
+                            p=new PostMLBB();
                             p.setHeroe(objSnaptshot.child("heroe").getValue().toString());
                             p.setLikes(Integer.parseInt(objSnaptshot.child("likes").getValue().toString()));
                             p.setTipo(objSnaptshot.child("tipo").getValue().toString());
+                            for (int i = 0 ; i < objSnaptshot.child("imagenes").getChildrenCount() ; i++ ){
+                                p.setImagenes(objSnaptshot.child("imagenes").child(i+"").toString());
+                            }
+                            for (int i = 0 ; i < objSnaptshot.child("comentarios").getChildrenCount() ; i++ ){
+                                p.setComentarios(new Comentario(
+                                        objSnaptshot.child("comentarios").child(i+"").child("idComentario").toString(),
+                                        objSnaptshot.child("comentarios").child(i+"").child("correo").toString(),
+                                        objSnaptshot.child("comentarios").child(i+"").child("username").toString(),
+                                        objSnaptshot.child("comentarios").child(i+"").child("comentario").toString(),
+                                        objSnaptshot.child("comentarios").child(i+"").child("fecha").toString()));
+                            }
+                            p.setImagenes(objSnaptshot.child("imagenes").child("0").toString());
                             p.setDescripcionEN(objSnaptshot.child("descripcionEN").getValue().toString());
                             p.setDescripcionES(objSnaptshot.child("descripcionES").getValue().toString());
                             p.setFecha(objSnaptshot.child("fecha").getValue().toString());
@@ -115,24 +121,41 @@ public class Noticias extends Fragment {
                             LinearLayout layout = new LinearLayout(getContext());
                             layout.setOrientation(LinearLayout.VERTICAL);
                             layout.setBackgroundColor(c1);
-                            layout.setLayoutParams(new LinearLayout.LayoutParams(550, 1300));
+                            layout.setLayoutParams(new LinearLayout.LayoutParams(550, 1500));
                             layout.setGravity(Gravity.CENTER);
 
                             TextView Heroe = new TextView(getContext());
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(480, 50);
-                            layoutParams.setMargins(30,30,30,15);
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(550, 60);
+                            layoutParams.setMargins(30,0,30,0);
                             Heroe.setLayoutParams(layoutParams);
+                            Heroe.setTypeface(null, Typeface.BOLD);
                             Heroe.setText(p.getHeroe());
-
+                            Drawable img;
+                            switch (p.getTipo()){
+                                case "Revamp":
+                                    img = getContext().getResources().getDrawable(R.drawable.ic_revamp);
+                                    break;
+                                case "Nerf":
+                                    img = getContext().getResources().getDrawable(R.drawable.ic_nerf);
+                                    break;
+                                case "Buff":
+                                    img = getContext().getResources().getDrawable(R.drawable.ic_buff);
+                                    break;
+                                default:
+                                    img = getContext().getResources().getDrawable(R.drawable.ic_buff);
+                            }
+                            Bitmap bitmap = ((BitmapDrawable) img).getBitmap();
+                            img = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 30, 30, true));
+                            Heroe.setCompoundDrawablesWithIntrinsicBounds(img, null, img, null);
                             Heroe.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15+tama);
-                            Heroe.setTextColor(c4);
+                            Heroe.setTextColor(cfont);
                             Heroe.setBackgroundColor(c1);
                             Heroe.setGravity(Gravity.CENTER);
 
                             layout.addView(Heroe);
 
                             TextView Descripcion = new TextView(getContext());
-                            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(480, 854);
+                            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(490, 750);
                             layoutParams1.setMargins(30,15,30,30);
                             Descripcion.setLayoutParams(layoutParams1);
                             Descripcion.setText(p.getDescripcionES());
@@ -140,10 +163,50 @@ public class Noticias extends Fragment {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 Descripcion.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
                             }
-                            Descripcion.setTextColor(c3);
+
+                            Descripcion.setTextColor(cfont);
                             Descripcion.setBackgroundColor(c1);
 
                             layout.addView(Descripcion);
+
+                            LinearLayout layoutDatos = new LinearLayout(getContext());
+                            layoutDatos.setOrientation(LinearLayout.HORIZONTAL);
+                            layoutDatos.setBackgroundColor(c1);
+                            layoutDatos.setLayoutParams(new LinearLayout.LayoutParams(550, 80));
+                            layoutDatos.setGravity(Gravity.LEFT);
+
+                                TextView Likes = new TextView(getContext());
+                                LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(130, 80);
+                                layoutParams2.setMargins(30,30,30,15);
+                                Likes.setLayoutParams(layoutParams2);
+                                Likes.setText(""+p.getLikes());
+                                img = getContext().getResources().getDrawable(R.drawable.ic_like);
+                                bitmap = ((BitmapDrawable) img).getBitmap();
+                                img = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 15, 15, true));
+                                img.setTint(Color.WHITE);
+                                Likes.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
+                                Likes.setTypeface(null, Typeface.BOLD);
+                                Likes.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13+tama);
+                                Likes.setTextColor(cfont);
+                                Likes.setBackgroundColor(c1);
+                                Likes.setGravity(Gravity.CENTER_VERTICAL);
+
+                                layoutDatos.addView(Likes);
+
+                                TextView Fecha = new TextView(getContext());
+                                LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(300, 80);
+                                layoutParams3.setMargins(30,30,30,15);
+                                Fecha.setLayoutParams(layoutParams3);
+                                Fecha.setText("Fecha : "+p.getFecha());
+                                Fecha.setTypeface(null, Typeface.BOLD);
+                                Fecha.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13+tama);
+                                Fecha.setTextColor(cfont);
+                                Fecha.setBackgroundColor(c1);
+                                Fecha.setGravity(Gravity.RIGHT);
+
+                                layoutDatos.addView(Fecha);
+
+                            layout.addView(layoutDatos);
 
                             mBitmapIds.add(new BitmapDrawable(loadBitmapFromView(layout)));
                         }
@@ -167,18 +230,26 @@ public class Noticias extends Fragment {
                 public void updatePage(CurlPage page, int width, int height, int index) {
                     Bitmap front = loadBitmap(width, height, index);
                     page.setTexture(front, CurlPage.SIDE_FRONT);
+                    page.setColor(c2, CurlPage.SIDE_BACK);
                 }
             });
             mCurlView.setCurrentIndex(index);
             btnDetalle.setBackgroundColor(c3);
-            btnDetalle.setTextColor(c1);
+            btnDetalle.setTextColor(cfont);
             btnDetalle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getContext(), "->"+mCurlView.getCurrentIndex(), Toast.LENGTH_SHORT).show();
+                    if((mCurlView.getCurrentIndex()>0 && mCurlView.getCurrentIndex()<=listaPost.size())){
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("IDPost", listaIDS.get(mCurlView.getCurrentIndex()-1));
+                        editor.apply();
+
+                        Navigation.findNavController(v).navigate(R.id.nav_Detalle);
+                    }else {
+                        Toast.makeText(getContext(), "No existe post", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
-//            Toast.makeText(getContext(), mCurlView.getCurrentIndex(), Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }

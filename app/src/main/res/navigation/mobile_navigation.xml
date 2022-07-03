@@ -20,5 +20,15 @@
         android:name="com.example.androidfinal.ui.Postear"
         android:label="@string/menu_Post"
         tools:layout="@layout/fragment_postear" />
+    <fragment
+        android:id="@+id/nav_Detalle"
+        android:name="com.example.androidfinal.ui.Detalle"
+        android:label="@string/menu_Detalle"
+        tools:layout="@layout/fragment_detalle" />
+    <fragment
+        android:id="@+id/nav_FullScreen"
+        android:name="com.example.androidfinal.ui.FullScrem"
+        android:label="@string/menu_Full"
+        tools:layout="@layout/fragment_full_screm" />
 
 </navigation>

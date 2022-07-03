@@ -10,8 +10,9 @@
     <string name="menu_Noticias">Noticias</string>
     <string name="menu_Configuración">Configuración</string>
     <string name="menu_Post">Add Post</string>
+    <string name="menu_Detalle">Detalle</string>
+    <string name="menu_Full">Imagen</string>
     <string name="nav_header_Title">Mobile Legends</string>
     <string name="nav_header_TitleAction">Noticias</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

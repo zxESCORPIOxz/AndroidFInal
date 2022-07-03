@@ -23,7 +23,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Configuracion extends Fragment {
 
-    int c1,c2,c3,c4,c5,f;
+    int c1,c2,c3,c4,c5,f,cfont;
     int sise=2;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,39 +49,49 @@ public class Configuracion extends Fragment {
         edtCorreo.setText(sp.getString("Correo", "Anonimo"));
         edtNombre.setText(sp.getString("Nombre", "Anonimo"));
         f = Integer.parseInt(sp.getString("Fuente", "2"));
+        cfont = Color.WHITE;
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("ARCHIVOREG", MODE_PRIVATE);
         if(sharedPreferences.getString("Theme","1").equals("1")){
             swtaltocontraste.setChecked(true);
         }else {
             swtaltocontraste.setChecked(false);
         }
-        swtaltocontraste.setTextColor(c3);
-        txtFuente.setTextColor(c3);
-        txtCorreo.setTextColor(c3);
-        txtNombre.setTextColor(c3);
+        swtaltocontraste.setTextColor(cfont);
+        txtFuente.setTextColor(cfont);
+        txtCorreo.setTextColor(cfont);
+        txtNombre.setTextColor(cfont);
         edtCorreo.setTextColor(c2);
         edtNombre.setTextColor(c2);
-        btnF1.setTextColor(c3);
+        btnF1.setTextColor(cfont);
+        btnF2.setTextColor(cfont);
+        btnF3.setTextColor(cfont);
+        btnSave.setTextColor(cfont);
+
+        swtaltocontraste.setTextSize((f*2)+11);
+        txtFuente.setTextSize((f*2)+11);
+        txtCorreo.setTextSize((f*2)+11);
+        txtNombre.setTextSize((f*2)+11);
+        edtCorreo.setTextSize((f*2)+11);
+        edtNombre.setTextSize((f*2)+11);
+        btnSave.setTextSize((f*2)+11);
+
         btnF1.setBackgroundColor(c5);
-        btnF2.setTextColor(c3);
         btnF2.setBackgroundColor(c5);
-        btnF3.setTextColor(c3);
         btnF3.setBackgroundColor(c5);
-        btnSave.setTextColor(c3);
         btnSave.setBackgroundColor(c5);
         switch(f){
             case 1:{
-                btnF1.setTextColor(c1);
+                btnF1.setTextColor(cfont);
                 btnF1.setBackgroundColor(c3);
                 break;
             }
             case 2:{
-                btnF2.setTextColor(c1);
+                btnF2.setTextColor(cfont);
                 btnF2.setBackgroundColor(c3);
                 break;
             }
             case 3:{
-                btnF3.setTextColor(c1);
+                btnF3.setTextColor(cfont);
                 btnF3.setBackgroundColor(c3);
                 break;
             }
@@ -95,11 +105,11 @@ public class Configuracion extends Fragment {
             @Override
             public void onClick(View v) {
                 f=1;
-                btnF1.setTextColor(c1);
+                btnF1.setTextColor(cfont);
                 btnF1.setBackgroundColor(c3);
-                btnF2.setTextColor(c3);
+                btnF2.setTextColor(cfont);
                 btnF2.setBackgroundColor(c5);
-                btnF3.setTextColor(c3);
+                btnF3.setTextColor(cfont);
                 btnF3.setBackgroundColor(c5);
             }
         });
@@ -107,11 +117,11 @@ public class Configuracion extends Fragment {
             @Override
             public void onClick(View v) {
                 f=2;
-                btnF1.setTextColor(c3);
+                btnF1.setTextColor(cfont);
                 btnF1.setBackgroundColor(c5);
-                btnF2.setTextColor(c1);
+                btnF2.setTextColor(cfont);
                 btnF2.setBackgroundColor(c3);
-                btnF3.setTextColor(c3);
+                btnF3.setTextColor(cfont);
                 btnF3.setBackgroundColor(c5);
             }
         });
@@ -119,11 +129,11 @@ public class Configuracion extends Fragment {
             @Override
             public void onClick(View v) {
                 f=3;
-                btnF1.setTextColor(c3);
+                btnF1.setTextColor(cfont);
                 btnF1.setBackgroundColor(c5);
-                btnF2.setTextColor(c3);
+                btnF2.setTextColor(cfont);
                 btnF2.setBackgroundColor(c5);
-                btnF3.setTextColor(c1);
+                btnF3.setTextColor(cfont);
                 btnF3.setBackgroundColor(c3);
             }
         });

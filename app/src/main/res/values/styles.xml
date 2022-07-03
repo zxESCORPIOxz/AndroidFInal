@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/color1</item>
         <item name="colorPrimaryDark">@color/color2</item>
         <item name="colorAccent">@color/color3</item>
-        <item name="colorControlHighlight">@color/color4</item>​
+        <item name="colorControlHighlight">@color/color2</item>​
         <item name="colorControlNormal">@color/color5</item>
         <item name="colorSwitchThumbNormal">@color/color3</item>
         <item name="android:colorForeground">@color/color4</item>
@@ -17,7 +17,7 @@
         <item name="colorPrimary">@color/color1</item>
         <item name="colorPrimaryDark">@color/color2</item>
         <item name="colorAccent">@color/color3</item>
-        <item name="colorControlHighlight">@color/color4</item>​
+        <item name="colorControlHighlight">@color/color2</item>​
         <item name="colorControlNormal">@color/color5</item>
         <item name="colorSwitchThumbNormal">@color/color3</item>
         <item name="android:colorForeground">@color/color4</item>
@@ -32,7 +32,7 @@
         <item name="colorPrimary">@color/color1D</item>
         <item name="colorPrimaryDark">@color/color2D</item>
         <item name="colorAccent">@color/color3D</item>
-        <item name="colorControlHighlight">@color/color4D</item>​
+        <item name="colorControlHighlight">@color/color2D</item>​
         <item name="colorControlNormal">@color/color5D</item>
         <item name="colorSwitchThumbNormal">@color/color3D</item>
         <item name="android:colorForeground">@color/color4D</item>
@@ -43,13 +43,11 @@
         <item name="text_Color">@color/color3D</item>
     </style>
 
-
-
     <style name="AppThemeB" parent="Theme.AppCompat.Light">
     <item name="colorPrimary">@color/color1</item>
     <item name="colorPrimaryDark">@color/color2</item>
     <item name="colorAccent">@color/color3</item>
-    <item name="colorControlHighlight">@color/color4</item>​
+    <item name="colorControlHighlight">@color/color2</item>​
     <item name="colorControlNormal">@color/color5</item>
     <item name="colorSwitchThumbNormal">@color/color3</item>
     <item name="android:colorForeground">@color/color4</item>
@@ -57,6 +55,7 @@
     <item name="android:textSize">17sp</item>
     <item name="actionModeBackground">@color/color5</item>
 </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -70,7 +69,7 @@
         <item name="colorPrimary">@color/color1D</item>
         <item name="colorPrimaryDark">@color/color2D</item>
         <item name="colorAccent">@color/color3D</item>
-        <item name="colorControlHighlight">@color/color4D</item>​
+        <item name="colorControlHighlight">@color/color2D</item>​
         <item name="colorControlNormal">@color/color5D</item>
         <item name="colorSwitchThumbNormal">@color/color3D</item>
         <item name="android:colorForeground">@color/color4D</item>
@@ -82,7 +81,7 @@
         <item name="colorPrimary">@color/color1D</item>
         <item name="colorPrimaryDark">@color/color2D</item>
         <item name="colorAccent">@color/color3D</item>
-        <item name="colorControlHighlight">@color/color4D</item>​
+        <item name="colorControlHighlight">@color/color2D</item>​
         <item name="colorControlNormal">@color/color5D</item>
         <item name="colorSwitchThumbNormal">@color/color3D</item>
         <item name="android:colorForeground">@color/color4D</item>
@@ -94,12 +93,29 @@
         <item name="colorPrimary">@color/color1D</item>
         <item name="colorPrimaryDark">@color/color2D</item>
         <item name="colorAccent">@color/color3D</item>
-        <item name="colorControlHighlight">@color/color4D</item>​
+        <item name="colorControlHighlight">@color/color2D</item>​
         <item name="colorControlNormal">@color/color5D</item>
         <item name="colorSwitchThumbNormal">@color/color3D</item>
         <item name="android:colorForeground">@color/color4D</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textSize">17sp</item>
         <item name="actionModeBackground">@color/color5D</item>
+    </style>
+
+
+    <style name="menupequenio">
+        <item name="android:textColor">@color/Blanco</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="menumediano">
+        <item name="android:textColor">@color/Blanco</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="menugrande">
+        <item name="android:textColor">@color/Blanco</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

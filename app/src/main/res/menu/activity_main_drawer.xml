@@ -12,10 +12,10 @@
             android:icon="@drawable/ic_confi"
             android:title="@string/menu_Configuración" />
     </group>
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_Post"
-            android:icon="@drawable/ic_post"
-            android:title="@string/menu_Post" />
-    </group>
+<!--    <group android:checkableBehavior="single">-->
+<!--        <item-->
+<!--            android:id="@+id/nav_Post"-->
+<!--            android:icon="@drawable/ic_post"-->
+<!--            android:title="@string/menu_Post" />-->
+<!--    </group>-->
 </menu>
