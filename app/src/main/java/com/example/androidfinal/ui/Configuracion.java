@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class Configuracion extends Fragment {
 
     int c1,c2,c3,c4,c5,f,cfont;
-    int sise=2;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,11 +51,7 @@ public class Configuracion extends Fragment {
         f = Integer.parseInt(sp.getString("Fuente", "2"));
         cfont = Color.WHITE;
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("ARCHIVOREG", MODE_PRIVATE);
-        if(sharedPreferences.getString("Theme","1").equals("1")){
-            swtaltocontraste.setChecked(true);
-        }else {
-            swtaltocontraste.setChecked(false);
-        }
+
         swtaltocontraste.setTextColor(cfont);
         txtFuente.setTextColor(cfont);
         txtCorreo.setTextColor(cfont);
@@ -96,10 +92,10 @@ public class Configuracion extends Fragment {
                 break;
             }
             default:{
-                Toast.makeText(getContext(), "Fuente alterada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.msjFuente, Toast.LENGTH_SHORT).show();
             }
         }
-        view.setBackgroundColor(c1);
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         btnF1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,11 +159,21 @@ public class Configuracion extends Fragment {
                     editor.putString("Fuente", ""+f);
                     editor.apply();
                 }
-                Toast.makeText(getContext(), "Guardado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.msjSave, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
+        if(sharedPreferences.getString("Theme","1").equals("1")){
+            swtaltocontraste.setChecked(true);
+            view.setBackgroundResource(R.drawable.redn1_1);
+            btnSave.setBackgroundResource(R.drawable.redn5_1);
+        }else {
+            swtaltocontraste.setChecked(false);
+            view.setBackgroundResource(R.drawable.redn1_2);
+            btnSave.setBackgroundResource(R.drawable.redn5_2);
+        }
+        view.setPadding(30,30,30,30);
         return view;
     }
 }

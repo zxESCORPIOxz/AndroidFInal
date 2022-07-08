@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mobile Legends</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_Noticias">News</string>
+    <string name="menu_Configuración">Settings</string>
+    <string name="menu_Post">Add Post</string>
+    <string name="menu_Detalle">Detail</string>
+    <string name="menu_Full">Image</string>
+    <string name="menu_Comentario">Comment</string>
+    <string name="nav_header_Title">Mobile Legends</string>
+    <string name="nav_header_TitleAction">News</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edtcomentario">Comment</string>
+    <string name="txtpublicar">Publish</string>
+    <string name="txtbienvenida">Welcome</string>
+    <string name="btnomitir">Skip</string>
+    <string name="btnComentario">Comment</string>
+    <string name="msjFuente">Altered font</string>
+    <string name="msjPost">Altered font</string>
+    <string name="msjSave">Save</string>
+    <string name="btndetalle">Detail</string>
+    <string name="edtcorreo">Email</string>
+    <string name="edtnombre">Name</string>
+    <string name="edtaltocontraste">High contrast</string>
+    <string name="edttamfuente">Font size</string>
+    <string name="btnguardar">Save</string>
+</resources>

@@ -30,5 +30,10 @@
         android:name="com.example.androidfinal.ui.FullScrem"
         android:label="@string/menu_Full"
         tools:layout="@layout/fragment_full_screm" />
+    <fragment
+        android:id="@+id/nav_Comentario"
+        android:name="com.example.androidfinal.ui.ComentarioSub"
+        android:label="@string/menu_Comentario"
+        tools:layout="@layout/fragment_comentario" />
 
 </navigation>

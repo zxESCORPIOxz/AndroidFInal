@@ -1,6 +1,8 @@
 package com.example.androidfinal.ui;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,12 +19,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.speech.RecognizerIntent;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,21 +34,34 @@ import android.widget.Toast;
 import com.example.androidfinal.Comentario;
 import com.example.androidfinal.PostMLBB;
 import com.example.androidfinal.R;
+import com.example.androidfinal.vozManager;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import techpaliyal.com.curlviewanimation.CurlPage;
 import techpaliyal.com.curlviewanimation.CurlView;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Noticias extends Fragment {
+
+    private AdView mAdView;
     DatabaseReference df = FirebaseDatabase.getInstance().getReference();
     CurlView mCurlView;
+    ImageView btnVoz;
     Button btnDetalle;
-    String er;
     ArrayList<PostMLBB> listaPost = new ArrayList<>();
     ArrayList<String> listaIDS = new ArrayList<>();
     int c1,c2,c3,c4,c5,f,tema,cfont=0;
@@ -52,11 +69,58 @@ public class Noticias extends Fragment {
     int index = 0;
     PostMLBB p = new PostMLBB();
     ArrayList<BitmapDrawable> mBitmapIds =new ArrayList<>();
+    vozManager vM;
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_noticias, container, false);
+
+        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+
+            }
+        });
+
+        mAdView = view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdImpression() {
+                // Code to be executed when an impression is recorded
+                // for an ad.
+            }
+
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+        });
+
         SharedPreferences sp = getContext().getSharedPreferences("ARCHIVOREG", MODE_PRIVATE);
         c1=Color.parseColor(sp.getString("Color1", "#3552f2"));
         c2=Color.parseColor(sp.getString("Color2", "#162d59"));
@@ -80,7 +144,7 @@ public class Noticias extends Fragment {
                 break;
             }
             default:{
-                Toast.makeText(getContext(), "Fuente alterada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.msjFuente, Toast.LENGTH_SHORT).show();
             }
         }
         try {
@@ -107,11 +171,10 @@ public class Noticias extends Fragment {
                             }
                             for (int i = 0 ; i < objSnaptshot.child("comentarios").getChildrenCount() ; i++ ){
                                 p.setComentarios(new Comentario(
-                                        objSnaptshot.child("comentarios").child(i+"").child("idComentario").toString(),
-                                        objSnaptshot.child("comentarios").child(i+"").child("correo").toString(),
-                                        objSnaptshot.child("comentarios").child(i+"").child("username").toString(),
-                                        objSnaptshot.child("comentarios").child(i+"").child("comentario").toString(),
-                                        objSnaptshot.child("comentarios").child(i+"").child("fecha").toString()));
+                                    objSnaptshot.child("comentarios").child(i+"").child("correo").toString(),
+                                    objSnaptshot.child("comentarios").child(i+"").child("username").toString(),
+                                    objSnaptshot.child("comentarios").child(i+"").child("comentario").toString(),
+                                    objSnaptshot.child("comentarios").child(i+"").child("fecha").toString()));
                             }
                             p.setImagenes(objSnaptshot.child("imagenes").child("0").toString());
                             p.setDescripcionEN(objSnaptshot.child("descripcionEN").getValue().toString());
@@ -120,7 +183,19 @@ public class Noticias extends Fragment {
                             listaPost.add(p);
                             LinearLayout layout = new LinearLayout(getContext());
                             layout.setOrientation(LinearLayout.VERTICAL);
-                            layout.setBackgroundColor(c1);
+                            if(tema==1){
+                                layout.setBackgroundResource(R.drawable.redn1_1);
+                                view.setBackgroundResource(R.drawable.redn1_1);
+//                                mCurlView.setBackgroundResource(R.drawable.redn1_1);
+                                btnDetalle.setBackgroundResource(R.drawable.redn3_1);
+                                btnVoz.setBackgroundResource(R.drawable.redn3_1);
+                            }else {
+                                layout.setBackgroundResource(R.drawable.redn1_2);
+                                view.setBackgroundResource(R.drawable.redn1_2);
+//                                mCurlView.setBackgroundResource(R.drawable.redn1_2);
+                                btnDetalle.setBackgroundResource(R.drawable.redn3_2);
+                                btnVoz.setBackgroundResource(R.drawable.redn3_2);
+                            }
                             layout.setLayoutParams(new LinearLayout.LayoutParams(550, 1500));
                             layout.setGravity(Gravity.CENTER);
 
@@ -149,7 +224,7 @@ public class Noticias extends Fragment {
                             Heroe.setCompoundDrawablesWithIntrinsicBounds(img, null, img, null);
                             Heroe.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15+tama);
                             Heroe.setTextColor(cfont);
-                            Heroe.setBackgroundColor(c1);
+                            //Heroe.setBackgroundColor(c1);
                             Heroe.setGravity(Gravity.CENTER);
 
                             layout.addView(Heroe);
@@ -158,20 +233,24 @@ public class Noticias extends Fragment {
                             LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(490, 750);
                             layoutParams1.setMargins(30,15,30,30);
                             Descripcion.setLayoutParams(layoutParams1);
-                            Descripcion.setText(p.getDescripcionES());
+                            if (Locale.getDefault().getDisplayLanguage().equals("English")){
+                                Descripcion.setText(p.getDescripcionEN());
+                            }else {
+                                Descripcion.setText(p.getDescripcionES());
+                            }
                             Descripcion.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12+tama);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                 Descripcion.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
                             }
 
                             Descripcion.setTextColor(cfont);
-                            Descripcion.setBackgroundColor(c1);
+                            //Descripcion.setBackgroundColor(c1);
 
                             layout.addView(Descripcion);
 
                             LinearLayout layoutDatos = new LinearLayout(getContext());
                             layoutDatos.setOrientation(LinearLayout.HORIZONTAL);
-                            layoutDatos.setBackgroundColor(c1);
+                            //layoutDatos.setBackgroundColor(c1);
                             layoutDatos.setLayoutParams(new LinearLayout.LayoutParams(550, 80));
                             layoutDatos.setGravity(Gravity.LEFT);
 
@@ -188,7 +267,7 @@ public class Noticias extends Fragment {
                                 Likes.setTypeface(null, Typeface.BOLD);
                                 Likes.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13+tama);
                                 Likes.setTextColor(cfont);
-                                Likes.setBackgroundColor(c1);
+                                //Likes.setBackgroundColor(c1);
                                 Likes.setGravity(Gravity.CENTER_VERTICAL);
 
                                 layoutDatos.addView(Likes);
@@ -197,11 +276,11 @@ public class Noticias extends Fragment {
                                 LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(300, 80);
                                 layoutParams3.setMargins(30,30,30,15);
                                 Fecha.setLayoutParams(layoutParams3);
-                                Fecha.setText("Fecha : "+p.getFecha());
+                                Fecha.setText(""+p.getFecha());
                                 Fecha.setTypeface(null, Typeface.BOLD);
                                 Fecha.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13+tama);
                                 Fecha.setTextColor(cfont);
-                                Fecha.setBackgroundColor(c1);
+                                //Fecha.setBackgroundColor(c1);
                                 Fecha.setGravity(Gravity.RIGHT);
 
                                 layoutDatos.addView(Fecha);
@@ -234,7 +313,6 @@ public class Noticias extends Fragment {
                 }
             });
             mCurlView.setCurrentIndex(index);
-            btnDetalle.setBackgroundColor(c3);
             btnDetalle.setTextColor(cfont);
             btnDetalle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -246,7 +324,20 @@ public class Noticias extends Fragment {
 
                         Navigation.findNavController(v).navigate(R.id.nav_Detalle);
                     }else {
-                        Toast.makeText(getContext(), "No existe post", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.msjPost, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            btnVoz=view.findViewById(R.id.btnVoz);
+            vM=new vozManager();
+            vM.init(getContext());
+            btnVoz.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if((mCurlView.getCurrentIndex()>0 && mCurlView.getCurrentIndex()<=listaPost.size())){
+                        Cargartexto();
+                    }else {
+                        Toast.makeText(getContext(), R.string.msjPost, Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -255,6 +346,28 @@ public class Noticias extends Fragment {
         }
         return view;
     }
+    private void Cargartexto() {
+        float pitch = (float) 1;
+        if (pitch < 0.1) pitch = 0.1f;
+        float speed = (float) 1;
+        if (speed < 0.1) speed = 0.1f;
+        String leer;
+        if (Locale.getDefault().getDisplayLanguage().equals("English")){
+            leer = listaPost.get(mCurlView.getCurrentIndex()-1).getDescripcionEN();
+            leer = leer.replace(">>", " pass to ");
+            leer = leer.replace("(↓)", " nerfed ");
+            leer = leer.replace("(~)", " balanced ");
+            leer = leer.replace("(↑)", " buffed ");
+        }else {
+            leer = listaPost.get(mCurlView.getCurrentIndex()-1).getDescripcionES();
+            leer = leer.replace(">>", " pasa a ");
+            leer = leer.replace("(↓)", " nerfeado ");
+            leer = leer.replace("(~)", " balanceado ");
+            leer = leer.replace("(↑)", " bufeado ");
+        }
+        vM.IniciarCola(leer,pitch,speed);
+    }
+
 
     public static Bitmap loadBitmapFromView(View tv) {
         int spec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);

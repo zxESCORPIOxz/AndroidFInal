@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.ComentarioSub">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvComentarios"
+        android:layout_weight="100"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:padding="10dp"
+        android:layout_weight="1">
+        <EditText
+            android:id="@+id/edtmensaje_chat"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/Blanco"
+            android:padding="5dp"
+            android:maxLength="200"
+            android:hint="@string/edtcomentario"
+            android:textColor="@color/Negro"
+            android:textColorHint="@color/Negro"
+            android:inputType="textMultiLine" />
+        <TextView
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            android:id="@+id/btn_Send"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/txtpublicar"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.snackbar.Snackbar;
@@ -20,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.data.Style;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,6 +32,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 default:{
-                    Toast.makeText(this, "Fuente alterada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.msjFuente, Toast.LENGTH_SHORT).show();
                 }
             }
         }else {
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 default:{
-                    Toast.makeText(this, "Fuente alterada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.msjFuente, Toast.LENGTH_SHORT).show();
                 }
             }
         }

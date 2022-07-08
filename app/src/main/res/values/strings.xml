@@ -9,10 +9,26 @@
 
     <string name="menu_Noticias">Noticias</string>
     <string name="menu_Configuración">Configuración</string>
-    <string name="menu_Post">Add Post</string>
     <string name="menu_Detalle">Detalle</string>
     <string name="menu_Full">Imagen</string>
+    <string name="menu_Comentario">Comentario</string>
     <string name="nav_header_Title">Mobile Legends</string>
     <string name="nav_header_TitleAction">Noticias</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edtcomentario">Comentario</string>
+    <string name="txtpublicar">Publicar</string>
+    <string name="txtbienvenida">Bienvenida</string>
+    <string name="btnomitir">Omitir</string>
+    <string name="btnComentario">Comentario</string>
+    <string name="msjFuente">Fuente alterada</string>
+    <string name="msjPost">Fuente alterada</string>
+    <string name="msjSave">Guardar</string>
+    <string name="btndetalle">Detalle</string>
+    <string name="edtcorreo">Correo</string>
+    <string name="edtnombre">Nombre</string>
+    <string name="edtaltocontraste">Alto contraste</string>
+    <string name="edttamfuente">Tamaño de fuente</string>
+    <string name="btnguardar">Guardar</string>
+    <string name="menu_Post">Agregar Publicacion</string>
+
 </resources>

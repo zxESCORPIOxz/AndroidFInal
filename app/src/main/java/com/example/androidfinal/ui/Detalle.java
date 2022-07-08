@@ -32,6 +32,10 @@ import com.example.androidfinal.AdapterIMG;
 import com.example.androidfinal.Comentario;
 import com.example.androidfinal.PostMLBB;
 import com.example.androidfinal.R;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,11 +43,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class Detalle extends Fragment {
 
+    private AdView mAdView;
     int c1,c2,c3,c4,c5,f,tema;
     DatabaseReference df = FirebaseDatabase.getInstance().getReference();
     RecyclerView RC;
@@ -56,7 +62,43 @@ public class Detalle extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detalle, container, false);
+        mAdView = view.findViewById(R.id.adViewDetalle);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdClicked() {
+                // Code to be executed when the user clicks on an ad.
+            }
 
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+
+            @Override
+            public void onAdFailedToLoad(LoadAdError adError) {
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdImpression() {
+                // Code to be executed when an impression is recorded
+                // for an ad.
+            }
+
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+        });
         SharedPreferences sp = getContext().getSharedPreferences("ARCHIVOREG", MODE_PRIVATE);
         c1= Color.parseColor(sp.getString("Color1", "#3552f2"));
         c2=Color.parseColor(sp.getString("Color2", "#162d59"));
@@ -67,13 +109,14 @@ public class Detalle extends Fragment {
         tema= Integer.parseInt(sp.getString("Theme", "1"));
         f = Integer.parseInt(sp.getString("Fuente", "2"));
 
-        view.setBackgroundColor(c1);
+
 
         RC = view.findViewById(R.id.rcvImgs);
         imgTipo=view.findViewById(R.id.imvTipo);
         txtHeroe=view.findViewById(R.id.txtHeroe);
         txtDescripcion=view.findViewById(R.id.txtDescripcion);
         btnComentarios=view.findViewById(R.id.btnComentario);
+        LinearLayout lyttitulo=view.findViewById(R.id.lyttitulo);
         btnLike=view.findViewById(R.id.btnlike);
         df.child("PostMLBB").child(IDPost).addValueEventListener(new ValueEventListener() {
             @Override
@@ -88,11 +131,10 @@ public class Detalle extends Fragment {
                         }
                         for (int i = 0 ; i < objSnaptshot.child("comentarios").getChildrenCount() ; i++ ){
                             p.setComentarios(new Comentario(
-                                    objSnaptshot.child("comentarios").child(i+"").child("idComentario").toString(),
-                                    objSnaptshot.child("comentarios").child(i+"").child("correo").toString(),
-                                    objSnaptshot.child("comentarios").child(i+"").child("username").toString(),
-                                    objSnaptshot.child("comentarios").child(i+"").child("comentario").toString(),
-                                    objSnaptshot.child("comentarios").child(i+"").child("fecha").toString()));
+                                    objSnaptshot.child("comentarios").child(i+"").child("correo").getValue().toString(),
+                                    objSnaptshot.child("comentarios").child(i+"").child("username").getValue().toString(),
+                                    objSnaptshot.child("comentarios").child(i+"").child("comentario").getValue().toString(),
+                                    objSnaptshot.child("comentarios").child(i+"").child("fecha").getValue().toString()));
                         }
                         p.setDescripcionEN(objSnaptshot.child("descripcionEN").getValue().toString());
                         p.setDescripcionES(objSnaptshot.child("descripcionES").getValue().toString());
@@ -121,8 +163,11 @@ public class Detalle extends Fragment {
                         txtHeroe.setTypeface(null, Typeface.BOLD);
                         txtHeroe.setTextColor(Color.WHITE);
                         txtHeroe.setGravity(Gravity.LEFT);
-
-                        txtDescripcion.setText(p.getDescripcionES());
+                        if (Locale.getDefault().getDisplayLanguage().equals("English")){
+                            txtDescripcion.setText(p.getDescripcionEN());
+                        }else {
+                            txtDescripcion.setText(p.getDescripcionES());
+                        }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             txtDescripcion.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
                         }
@@ -158,16 +203,23 @@ public class Detalle extends Fragment {
                             }
                         });
 
-                        img = getContext().getResources().getDrawable(R.drawable.ic_comentario);
+                        img = getResources().getDrawable(R.drawable.ic_comentario);
                         bitmap = ((BitmapDrawable) img).getBitmap();
                         img = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 30, 30, true));
                         img.setTint(Color.WHITE);
                         btnComentarios.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null);
-                        btnComentarios.setText("Comentarios "+p.getComentarios().size());
+                        btnComentarios.setText(getResources().getString(R.string.btnComentario)+" "+p.getComentarios().size());
                         btnComentarios.setTextColor(Color.WHITE);
                         btnComentarios.setBackgroundColor(c5);
                         btnComentarios.setTypeface(null, Typeface.BOLD);
                         btnComentarios.setTextSize(f+15);
+                        btnComentarios.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Navigation.findNavController(v).navigate(R.id.nav_Comentario);
+                            }
+                        });
+
                         RC.setBackgroundColor(c1);
                         RC.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
                         AdapterIMG adapterIMG = new AdapterIMG(getContext(),p.getImagenes());
@@ -183,8 +235,28 @@ public class Detalle extends Fragment {
                             }
                         });
 
+                    if(tema==1){
+                        view.setBackgroundResource(R.drawable.redn1_1);
+                        lyttitulo.setBackgroundResource(R.drawable.redn3_1);
+                        btnComentarios.setBackgroundResource(R.drawable.redn5_1);
+                        if(sp.getString(IDPost,"0").equals("0")) {
+                            btnLike.setBackgroundResource(R.drawable.redn5_1);
+                        }else {
+                            btnLike.setBackgroundResource(R.drawable.redn3_1);
+                        }
+                    }else {
+                        view.setBackgroundResource(R.drawable.redn1_2);
+                        lyttitulo.setBackgroundResource(R.drawable.redn3_2);
+                        btnComentarios.setBackgroundResource(R.drawable.redn5_2);
+                        if(sp.getString(IDPost,"0").equals("0")) {
+                            btnLike.setBackgroundResource(R.drawable.redn5_2);
+                        }else {
+                            btnLike.setBackgroundResource(R.drawable.redn3_2);
+                        }
+                    }
+
                 }catch (Exception e){
-                    Toast.makeText(getContext(), "->"+e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
